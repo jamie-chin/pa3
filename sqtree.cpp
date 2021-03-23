@@ -52,6 +52,8 @@ SQtree::SQtree(PNG & imIn, double tol) {
 SQtree::Node * SQtree::buildTree(stats & s, pair<int,int> & ul,
 				 int w, int h, double tol) {
   // Your code here.
+  Node * tmp;
+  return tmp;
 }
   
 /**
@@ -59,6 +61,8 @@ SQtree::Node * SQtree::buildTree(stats & s, pair<int,int> & ul,
  */
 PNG SQtree::render() {
   // Your code here.
+  PNG im;
+  return im;
 }
 
 /**
@@ -74,5 +78,6 @@ void SQtree::copy(const SQtree & other) {
 
 int SQtree::size() {
   // Your code here.
+  return 0;
 }
 

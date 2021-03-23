@@ -11,12 +11,13 @@ stats::stats(PNG & im){
     vector< vector< long >> sumsqRed(im.height(), vector<long> (im.width()));
     vector< vector< long >> sumsqGreen(im.height(), vector<long> (im.width()));
     vector< vector< long >> sumsqBlue(im.height(), vector<long> (im.width()));*/
-    sumRed.resize(im.height(), vector<long>(im.width()));
-    sumGreen.resize(im.height(), vector<long>(im.width()));
-    sumBlue.resize(im.height(), vector<long>(im.width()));
-    sumsqRed.resize(im.height(), vector<long>(im.width()));
-    sumsqGreen.resize(im.height(), vector<long>(im.width()));
-    sumsqBlue.resize(im.height(), vector<long>(im.width()));
+    //sumRed.resize(im.height(), vector<long>(im.width()));
+    //cout << "initial size: " << sumRed.size() << endl;
+    //sumGreen.resize(im.height(), vector<long>(im.width()));
+    //sumBlue.resize(im.height(), vector<long>(im.width()));
+    //sumsqRed.resize(im.height(), vector<long>(im.width()));
+    //sumsqGreen.resize(im.height(), vector<long>(im.width()));
+    //sumsqBlue.resize(im.height(), vector<long>(im.width()));
     vector <long> firstTempRed;
     vector <long> firstTempGreen;
     vector <long> firstTempBlue;
@@ -67,22 +68,52 @@ stats::stats(PNG & im){
         for (unsigned j=0; j < im.width(); j++){ 
             RGBAPixel *pixel = im.getPixel(i,j);
 
-            int tempRedSum = pixel->r + sumRed[i-1][j] + tempRed[j-1];
+            int tempRedSum;
+            if (j == 0) {
+                tempRedSum = pixel->r + sumRed[i-1][j];
+            } else {
+                tempRedSum = pixel->r + sumRed[i-1][j] + tempRed[j-1];
+            }
             tempRed.push_back(tempRedSum);
             
-            int tempGreenSum = pixel->g + sumGreen[i-1][j] + tempGreen[j-1];
+            int tempGreenSum;
+            if (j == 0) {
+                tempGreenSum = pixel->g + sumGreen[i-1][j];
+            } else {
+                tempGreenSum = pixel->g + sumGreen[i-1][j] + tempGreen[j-1];
+            }
             tempGreen.push_back(tempGreenSum);
             
-            int tempBlueSum = pixel->b + sumBlue[i-1][j] + tempBlue[j-1];
+            int tempBlueSum;
+            if (j == 0) {
+                tempBlueSum = pixel->b + sumBlue[i-1][j];
+            } else {
+                tempBlueSum = pixel->b + sumBlue[i-1][j] + tempBlue[j-1];
+            }
             tempBlue.push_back(tempBlueSum);
 
-            int tempRedSumSq = pow(pixel->r, 2) + sumRed[i-1][j] + tempRedSq[j-1];
+            int tempRedSumSq;
+            if (j == 0) {
+                tempRedSumSq = pow(pixel->r, 2) + sumRed[i-1][j];
+            } else {
+                tempRedSumSq = pow(pixel->r, 2) + sumRed[i-1][j] + tempRedSq[j-1];
+            }
             tempRedSq.push_back(tempRedSumSq);
             
-            int tempGreenSumSq = pow(pixel->g, 2) + sumGreen[i-1][j] + tempGreenSq[j-1];
+            int tempGreenSumSq;
+            if (j == 0) {
+                tempGreenSumSq = pow(pixel->g, 2) + sumGreen[i-1][j];
+            } else {
+                tempGreenSumSq = pow(pixel->g, 2) + sumGreen[i-1][j] + tempGreenSq[j-1];
+            }
             tempGreenSq.push_back(tempGreenSumSq);
             
-            int tempBlueSumSq = pow(pixel->b, 2) + sumBlue[i-1][j] + tempBlueSq[j-1];
+            int tempBlueSumSq;
+            if (j == 0) {
+                tempBlueSumSq = pow(pixel->b, 2) + sumBlue[i-1][j];
+            } else {
+                tempBlueSumSq = pow(pixel->b, 2) + sumBlue[i-1][j] + tempBlueSq[j-1];
+            }
             tempBlueSq.push_back(tempBlueSumSq);
         }
         sumRed.push_back(tempRed);
@@ -91,6 +122,17 @@ stats::stats(PNG & im){
         sumsqRed.push_back(tempRedSq);
         sumsqGreen.push_back(tempGreenSq);
         sumsqBlue.push_back(tempBlueSq);
+        
+    }
+    //cout << "final size: " << sumRed.size() << endl;
+    //cout << "final element size: " << sumRed[0].size() << endl;
+    //cout << "final element size 1: " << sumRed[1].size() << endl;
+    for (int n = 0; n < im.height(); n++) {
+        for (int m = 0; m < im.width(); m++) {
+            //cout << "(" << n << "," << m << ") " << sumRed[n][m] << endl;
+            cout << sumRed[n][m] << " | ";
+        }
+        cout << endl;
     }
 }
 
