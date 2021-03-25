@@ -22,18 +22,20 @@ int main() {
   orig.readFromFile("images/orig/klee-flora-on-sand.png");
   orig.readFromFile("images/orig/stanley-totem-poles.png");
   */
-  
+
+  stats stats(orig);
+
   // use it to build a sqtree (try other tolerances)
-  SQtree t(orig,10.0);
+  //SQtree t(orig,10.0);
 
   // copy the tree (to show you can)
-  SQtree tCopy(t);
+  //SQtree tCopy(t);
 
   // render the sqtree
-  PNG pic = t.render();
+  //PNG pic = t.render();
 
   // write it out
-  pic.writeToFile("images/out/small1.png");
+  //pic.writeToFile("images/out/small1.png");
 
   return 0;
 }
