@@ -28,14 +28,24 @@ stats::stats(PNG & im){
     for(unsigned j=0; j < im.height(); j++) {
         RGBAPixel *pixel = im.getPixel(0,j);
 
-        int tempRedSum = j==0 ? pixel->r : pixel->r + firstTempRed[j-1];
+        if (j == 0) {
+            firstTempRed.push_back(pixel->r);
+            firstTempGreen.push_back(pixel->g);
+            firstTempBlue.push_back(pixel->b);
+        } else {
+            firstTempRed.push_back(pixel->r + firstTempRed[j-1]);
+            firstTempGreen.push_back(pixel->g + firstTempGreen[j-1]);
+            firstTempBlue.push_back(pixel->b + firstTempBlue[j-1]);
+        }
+        
+        /*int tempRedSum = j==0 ? pixel->r : pixel->r + firstTempRed[j-1];
         firstTempRed.push_back(tempRedSum);
 
         int tempGreenSum = j==0 ? pixel->g : pixel->g + firstTempGreen[j-1];
         firstTempGreen.push_back(tempGreenSum);
 
         int tempBlueSum = j==0 ? pixel->b : pixel->b + firstTempBlue[j-1];
-        firstTempBlue.push_back(tempBlueSum);
+        firstTempBlue.push_back(tempBlueSum);*/
     }
     sumRed.push_back(firstTempRed);
     sumGreen.push_back(firstTempGreen);
@@ -44,14 +54,24 @@ stats::stats(PNG & im){
     for(unsigned j=0; j < im.height(); j++) {
         RGBAPixel *pixel = im.getPixel(0,j);
 
-        int tempRedSumSq = j==0 ? (pixel->r)*(pixel->r) : (pixel->r)*(pixel->r) + firstTempRedSq[j-1];
+        if (j == 0) {
+            firstTempRedSq.push_back((pixel->r)*(pixel->r));
+            firstTempGreenSq.push_back((pixel->g)*(pixel->g));
+            firstTempBlueSq.push_back((pixel->b)*(pixel->b));
+        } else {
+            firstTempRedSq.push_back((pixel->r)*(pixel->r) + firstTempRedSq[j-1]);
+            firstTempGreenSq.push_back((pixel->g)*(pixel->g) + firstTempGreenSq[j-1]);
+            firstTempBlueSq.push_back((pixel->b)*(pixel->b) + firstTempBlueSq[j-1]);
+        }
+
+        /*int tempRedSumSq = j==0 ? (pixel->r)*(pixel->r) : (pixel->r)*(pixel->r) + firstTempRedSq[j-1];
         firstTempRedSq.push_back(tempRedSumSq);
             
         int tempGreenSumSq = j==0 ? (pixel->g)*(pixel->g) : (pixel->g)*(pixel->g) + firstTempGreenSq[j-1];
         firstTempGreenSq.push_back(tempGreenSumSq);
             
         int tempBlueSumSq = j==0 ? (pixel->b)*(pixel->b) : (pixel->b)*(pixel->b) + firstTempBlueSq[j-1];
-        firstTempBlueSq.push_back(tempBlueSumSq);
+        firstTempBlueSq.push_back(tempBlueSumSq);*/
     }
     sumsqRed.push_back(firstTempRedSq);
     sumsqGreen.push_back(firstTempGreenSq);
@@ -68,7 +88,23 @@ stats::stats(PNG & im){
         for (unsigned j=0; j < im.height(); j++){ 
             RGBAPixel *pixel = im.getPixel(i,j);
 
-            int tempRedSum = j==0 ? pixel->r + sumRed[i-1][j] : pixel->r + sumRed[i-1][j] + tempRed[j-1];
+            if (j == 0) {
+                tempRed.push_back(pixel->r + sumRed[i-1][j]);
+                tempGreen.push_back(pixel->g + sumGreen[i-1][j]);
+                tempBlue.push_back(pixel->b + sumBlue[i-1][j]);
+                tempRedSq.push_back((pixel->r)*(pixel->r) + sumRed[i-1][j]);
+                tempGreenSq.push_back((pixel->g)*(pixel->g) + sumGreen[i-1][j]);
+                tempBlueSq.push_back((pixel->b)*(pixel->b) + sumBlue[i-1][j]);
+            } else {
+                tempRed.push_back(pixel->r + sumRed[i-1][j] + tempRed[j-1]);
+                tempGreen.push_back(pixel->g + sumGreen[i-1][j] + tempGreen[j-1]);
+                tempBlue.push_back(pixel->b + sumBlue[i-1][j] + tempBlue[j-1]);
+                tempRedSq.push_back((pixel->r)*(pixel->r) + sumRed[i-1][j] + tempRedSq[j-1]);
+                tempGreenSq.push_back((pixel->g)*(pixel->g) + sumGreen[i-1][j] + tempGreenSq[j-1]);
+                tempBlueSq.push_back((pixel->b)*(pixel->b) + sumBlue[i-1][j] + tempBlueSq[j-1]);
+            }
+
+            /*int tempRedSum = j==0 ? pixel->r + sumRed[i-1][j] : pixel->r + sumRed[i-1][j] + tempRed[j-1];
             tempRed.push_back(tempRedSum);
             
             int tempGreenSum = j==0 ? pixel->g + sumGreen[i-1][j] : pixel->g + sumGreen[i-1][j] + tempGreen[j-1];
@@ -84,7 +120,7 @@ stats::stats(PNG & im){
             tempGreenSq.push_back(tempGreenSumSq);
             
             int tempBlueSumSq = j==0 ? (pixel->b)*(pixel->b) + sumBlue[i-1][j] : (pixel->b)*(pixel->b) + sumBlue[i-1][j] + tempBlueSq[j-1];
-            tempBlueSq.push_back(tempBlueSumSq);
+            tempBlueSq.push_back(tempBlueSumSq);*/
         }
         sumRed.push_back(tempRed);
         sumGreen.push_back(tempGreen);
@@ -97,13 +133,12 @@ stats::stats(PNG & im){
     //cout << "final size: " << sumRed.size() << endl;
     //cout << "final element size: " << sumRed[0].size() << endl;
     //cout << "final element size 1: " << sumRed[1].size() << endl;
-    /*for (int n = 0; n < 2; n++) {
-        for (int m = 0; m < 2; m++) {
-            //cout << "(" << n << "," << m << ") " << sumRed[n][m] << endl;
-            cout << sumRed[n][m] << " | ";
+    for (int n = 0; n < 4; n++) {
+        for (int m = 0; m < 4; m++) {
+            cout << sumRed[m][n] << " | ";
         }
         cout << endl;
-    }*/
+    }
 }
 
 
@@ -112,13 +147,16 @@ long stats::getSum(char channel, pair<int,int> ul, int w, int h){
     int x = ul.first;
     int y = ul.second;
 
+    if (w == 0 && h == 0) {
+        return (long)0;
+    } 
     if (x == 0 && y == 0) {
         if (channel == 'r') {
-            return sumRed[h][w];
+            return sumRed[h-1][w-1];
         } else if (channel == 'g') {
-            return sumGreen[h][w];
+            return sumGreen[h-1][w-1];
         } else if (channel == 'b') {
-            return sumBlue[h][w];
+            return sumBlue[h-1][w-1];
         }
     }
 
@@ -129,19 +167,24 @@ long stats::getSum(char channel, pair<int,int> ul, int w, int h){
     } else if (channel == 'b') {
         return sumBlue[h][w] - (sumBlue[h][ul.first-1]+sumBlue[ul.second-1][w]) + sumBlue[ul.second-1][ul.first-1];
     }
+
+    return (long)0;
 }
 
 long stats::getSumSq(char channel, pair<int,int> ul, int w, int h){
     int x = ul.first;
     int y = ul.second;
 
+    if (w == 0 && h == 0) {
+        return (long)0;
+    } 
     if (x == 0 && y == 0) {
         if (channel == 'r') {
-            return sumsqRed[h][w];
+            return sumsqRed[h-1][w-1];
         } else if (channel == 'g') {
-            return sumsqGreen[h][w];
+            return sumsqGreen[h-1][w-1];
         } else if (channel == 'b') {
-            return sumsqBlue[h][w];
+            return sumsqBlue[h-1][w-1];
         }
     }
 
@@ -152,22 +195,31 @@ long stats::getSumSq(char channel, pair<int,int> ul, int w, int h){
     } else if (channel == 'b') {
         return sumsqBlue[h][w] - (sumsqBlue[h][ul.first-1]+sumsqBlue[ul.second-1][w]) + sumsqBlue[ul.second-1][ul.first-1];
     }
+
+    return (long)0;
 }
 
 
 // given a rectangle, compute its sum of squared deviations from mean, over all color channels.
 // see written specification for a description of this function.
 double stats::getVar(pair<int,int> ul, int w, int h){
-    /*int x = ul.first;
-    int y = ul.second;
-    int area = (w - x + 1) * (h - y + 1);
+    //int x = ul.first;
+    //int y = ul.second;
 
-    double rSSD = getSumSq('r', ul, w, h) - getSum('r', ul, w, h) / area;
-    double gSSD = getSumSq('g', ul, w, h) - getSum('g', ul, w, h) / area;
-    double bSSD = getSumSq('b', ul, w, h) - getSum('b', ul, w, h) / area;
+    long area = w * h;
+    if (area == 0) {
+        return 0.0;
+    }
 
-    return rSSD + gSSD + bSSD;*/
-    return 0.0;
+    double rSSD = getSumSq('r', ul, w, h) - (getSum('r', ul, w, h) * getSum('r', ul, w, h)) / area;
+    //cout << "rSSD: " << rSSD << endl;
+    double gSSD = getSumSq('g', ul, w, h) - (getSum('g', ul, w, h) * getSum('g', ul, w, h)) / area;
+    //cout << "gSSD: " << gSSD << endl;
+    double bSSD = getSumSq('b', ul, w, h) - (getSum('b', ul, w, h) * getSum('b', ul, w, h)) / area;
+    //cout << "bSSD: " << bSSD << endl;
+
+    return rSSD + gSSD + bSSD;
+    // return 0.0;
 }
 		
 RGBAPixel stats::getAvg(pair<int,int> ul, int w, int h){
@@ -178,9 +230,9 @@ RGBAPixel stats::getAvg(pair<int,int> ul, int w, int h){
     // w, h = 3 and ul = 0, 0: sumred[2][2]
     // w, h = 1 and ul = 0, 0: sumred[0][0]
 
-    /*double area = w * h;
+    long area = w * h;
     if (area == 0) {
-        area = 1;
+        return RGBAPixel(0,0,0);
     }
     cout << "area: " << area << endl;
 
@@ -191,7 +243,7 @@ RGBAPixel stats::getAvg(pair<int,int> ul, int w, int h){
     long bSum = getSum('b', ul, w, h);
     cout << "bSum: " << bSum << endl;
     
-    RGBAPixel pixel = RGBAPixel(rSum/area, gSum/area, bSum/area);
-    return pixel;*/
-    return RGBAPixel(0,0,0);
+    RGBAPixel pixel = RGBAPixel((int)((double)rSum/(double)area), (int)((double)gSum/(double)area), (int)((double)bSum/(double)area));
+    return pixel;
+    //return RGBAPixel(0,0,0);
 }

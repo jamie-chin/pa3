@@ -11,19 +11,21 @@ int main() {
 
   // read in image
   PNG orig;
-  orig.readFromFile("images/orig/small1.png");
-  /*
-  orig.readFromFile("images/orig/small2.png");
-  orig.readFromFile("images/orig/pacman.png");
-  orig.readFromFile("images/orig/huckleberry_hound.png");
-  orig.readFromFile("images/orig/rocky.png");
-  orig.readFromFile("images/orig/rocky_bullwinkle.png");
-  orig.readFromFile("images/orig/colour.png");
-  orig.readFromFile("images/orig/klee-flora-on-sand.png");
-  orig.readFromFile("images/orig/stanley-totem-poles.png");
-  */
+  orig.readFromFile("images/orig/1111.png");
+  //orig.readFromFile("images/orig/small1.png");
+  //orig.readFromFile("images/orig/small2.png");
+  //orig.readFromFile("images/orig/pacman.png");
+  //orig.readFromFile("images/orig/huckleberry_hound.png");
+  //orig.readFromFile("images/orig/rocky.png");
+  //orig.readFromFile("images/orig/rocky_bullwinkle.png");
+  //orig.readFromFile("images/orig/colour.png");
+  //orig.readFromFile("images/orig/klee-flora-on-sand.png");
+  //orig.readFromFile("images/orig/stanley-totem-poles.png");
 
   stats stats(orig);
+  pair<int,int> ul (0,0);
+  cout << "getAvg(ul, 3, 3): " << stats.getAvg(ul, 3, 3) << endl;
+  cout << "getVar(ul, 3, 3): " << stats.getVar(ul, 3, 3) << endl;
 
   // use it to build a sqtree (try other tolerances)
   //SQtree t(orig,10.0);
