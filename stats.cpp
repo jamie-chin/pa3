@@ -107,11 +107,11 @@ long stats::getSum(char channel, pair<int,int> ul, int w, int h){
     }
 
     if (channel == 'r') {
-        return sumRed[h][w] - (sumRed[h][ul.first-1]+sumRed[ul.second-1][w]) + sumRed[ul.second-1][ul.first-1];
+        return sumRed[y+h-1][x+w-1] - (sumRed[y+h-1][x-1]+sumRed[y-1][x+w-1]) + sumRed[y-1][x-1];
     } else if (channel == 'g') {
-        return sumGreen[h][w] - (sumGreen[h][ul.first-1]+sumGreen[ul.second-1][w]) + sumGreen[ul.second-1][ul.first-1];
+        return sumGreen[y+h-1][x+w-1] - (sumGreen[y+h-1][x-1]+sumGreen[y-1][x+w-1]) + sumGreen[y-1][x-1];
     } else if (channel == 'b') {
-        return sumBlue[h][w] - (sumBlue[h][ul.first-1]+sumBlue[ul.second-1][w]) + sumBlue[ul.second-1][ul.first-1];
+        return sumBlue[y+h-1][x+w-1] - (sumBlue[y+h-1][x-1]+sumBlue[y-1][x+w-1]) + sumBlue[y-1][x-1];
     }
 
     return (long)0;
@@ -133,13 +133,13 @@ long stats::getSumSq(char channel, pair<int,int> ul, int w, int h){
             return sumsqBlue[h-1][w-1];
         }
     }
-
+    
     if (channel == 'r') {
-        return sumsqRed[h][w] - (sumsqRed[h][ul.first-1]+sumsqRed[ul.second-1][w]) + sumsqRed[ul.second-1][ul.first-1];
+        return sumsqRed[y+h-1][x+w-1] - (sumsqRed[y+h-1][x-1]+sumsqRed[y-1][x+w-1]) + sumsqRed[y-1][x-1];
     } else if (channel == 'g') {
-        return sumsqGreen[h][w] - (sumsqGreen[h][ul.first-1]+sumsqGreen[ul.second-1][w]) + sumsqGreen[ul.second-1][ul.first-1];
+        return sumsqGreen[y+h-1][x+w-1] - (sumsqGreen[y+h-1][x-1]+sumsqGreen[y-1][x+w-1]) + sumsqGreen[y-1][x-1];
     } else if (channel == 'b') {
-        return sumsqBlue[h][w] - (sumsqBlue[h][ul.first-1]+sumsqBlue[ul.second-1][w]) + sumsqBlue[ul.second-1][ul.first-1];
+        return sumsqBlue[y+h-1][x+w-1] - (sumsqBlue[y+h-1][x-1]+sumsqBlue[y-1][x+w-1]) + sumsqBlue[y-1][x-1];
     }
 
     return (long)0;
@@ -155,13 +155,15 @@ double stats::getVar(pair<int,int> ul, int w, int h){
     }
 
     double rSSD = getSumSq('r', ul, w, h) - (getSum('r', ul, w, h) * getSum('r', ul, w, h)) / area;
-    //cout << "rSSD: " << rSSD << endl;
+    cout << "rSSD: " << rSSD << endl;
     double gSSD = getSumSq('g', ul, w, h) - (getSum('g', ul, w, h) * getSum('g', ul, w, h)) / area;
-    //cout << "gSSD: " << gSSD << endl;
+    cout << "gSSD: " << gSSD << endl;
     double bSSD = getSumSq('b', ul, w, h) - (getSum('b', ul, w, h) * getSum('b', ul, w, h)) / area;
-    //cout << "bSSD: " << bSSD << endl;
+    cout << "bSSD: " << bSSD << endl;
 
-    return rSSD + gSSD + bSSD;
+    double varResult = rSSD + gSSD + bSSD;
+    cout << "variance: " << varResult << endl;
+    return varResult;
     // return 0.0;
 }
 		
@@ -181,5 +183,6 @@ RGBAPixel stats::getAvg(pair<int,int> ul, int w, int h){
     
     RGBAPixel pixel = RGBAPixel((int)((double)rSum/(double)area), (int)((double)gSum/(double)area), (int)((double)bSum/(double)area));
     return pixel;
+    cout << "average: " << pixel << endl;
     //return RGBAPixel(0,0,0);
 }
