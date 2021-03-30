@@ -45,10 +45,10 @@ SQtree & SQtree::operator=(const SQtree & rhs) {
 SQtree::SQtree(PNG & imIn, double tol) {
 
   stats s(imIn);
+  //unsure abt what the pair coordinates should be
   pair<int,int> ul(0,0);
   int w = imIn.width();
   int h = imIn.height();
-  tol = 0.0;
 
   root = buildTree(s, ul, w, h, tol);
 }
@@ -58,9 +58,20 @@ SQtree::SQtree(PNG & imIn, double tol) {
  */
 SQtree::Node * SQtree::buildTree(stats & s, pair<int,int> & ul,
 				 int w, int h, double tol) {
-  // Your code here.
-  Node * tmp;
-  return tmp;
+  //use node constructor to construct node with stats, ul, w, h
+  Node *node = new Node(s, ul, w, h);
+  double maxVar;
+  double minVar; 
+
+  //cutoff/when to stop
+  if (s.getVar <= tol || (w==1 && h==1)) {
+    //return node
+
+    // if (x==0), partition horizontally
+    // if (y==0), partition vertically
+    //???? compare maxVar and minVar and select the mins of the maxVars
+  } 
+
 }
   
 /**
@@ -68,9 +79,6 @@ SQtree::Node * SQtree::buildTree(stats & s, pair<int,int> & ul,
  */
 PNG SQtree::render() {
   // Your code here.
-  PNG im;
-  return im;
-}
 
 /**
  * Delete allocated memory.
